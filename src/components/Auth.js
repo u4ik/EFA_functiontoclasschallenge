@@ -6,7 +6,7 @@ const Auth = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const URL = `https://useracess.herokuapp.com/user/${signup ? 'create' : 'login'}`;
+    const apiURL = `https://useracess.herokuapp.com/user/${signup ? 'create' : 'login'}`;
 
 
     const handleSubmit = async (e) => {
@@ -17,7 +17,7 @@ const Auth = (props) => {
             password: password,
         }
         try {
-            const res = await fetch(URL, {
+            const res = await fetch(apiURL, {
                 method: "POST",
                 body: JSON.stringify(reqBody),
                 headers: {
