@@ -52,7 +52,7 @@ const Auth = (props) => {
 
                 <button type='button' style={{ margin: '1em' }} onClick={() => setSignup(!signup)}>{signup ? 'Need to Login?' : 'Need to Signup?'}</button>
 
-                <input type='submit' style={{ margin: '1em' }} >{signup ? 'Signup' : 'Login'}</input>
+                <button type='submit' style={{ margin: '1em' }} >{signup ? 'Signup' : 'Login'}></button>
 
             </form>
         </>
