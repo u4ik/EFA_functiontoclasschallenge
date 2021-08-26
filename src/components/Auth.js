@@ -1,20 +1,29 @@
-import { useState, useEffect } from 'react'
+import React, { Component } from 'react';
 
-const Auth = (props) => {
+class Auth extends Component {
 
-    const [signup, setSignup] = useState(true);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [errorText, setErrorText] = useState('');
+    constructor(props) {
+        super(props)
+        this.state = {
+            email: '',
+            password: '',
+            signup: true,
+            errorText: '',
+            eValid: false,
+            pValid: false
+        }
 
-    
-    const handleSubmit = async (e) => {
+    }
+
+
+
+    handleSubmit = async (e) => {
         e.preventDefault();
-        const apiURL = `https://useracess.herokuapp.com/user/${signup ? 'create' : 'login'}`;
+        const apiURL = `https://useracess.herokuapp.com/user/${this.state.signup ? 'create' : 'login'}`;
 
         const reqBody = {
-            email: email,
-            password: password,
+            email: this.state.email,
+            password: this.state.password,
         }
 
         try {
@@ -30,11 +39,13 @@ const Auth = (props) => {
 
             if (json.errors) {
                 let errMsg = json.errors[0].message
-                setErrorText(errMsg.charAt(0).toUpperCase() + errMsg.slice(1) + '.')
+                this.setState({
+                    errorText: errMsg.charAt(0).toUpperCase() + errMsg.slice(1) + '.'
+                })
                 throw new Error(json.errors[0].message)
             } else {
                 console.log(json.Message);
-                props.setLoggedIn(true)
+                this.props.setLoggedIn(true)
             }
 
         } catch (e) {
@@ -42,45 +53,50 @@ const Auth = (props) => {
         }
     }
 
-    const handleEmail = (e) => {
-        setEmail(e.target.value)
+    handleEmail = (e) => {
+        this.setState({
+           email: e.target.value
+        })
     }
 
-    const handlePassword = (e) => {
-        setPassword(e.target.value)
+    handlePassword = (e) => {
+        this.setState({
+           password: e.target.value
+        })
     }
 
-    useEffect(() => {
-        props.setIsClass(Boolean(Auth?.prototype?.render))
-    })
+    componentDidMount(){
+        this.props.setIsClass(Boolean(Auth?.prototype?.render))
+    }
 
-
+render(){
     return (
         <>
-        <p style={{ margin: 0, fontSize: '.5em' }}>{errorText}</p>
-            <form style={{ display: 'flex', flexDirection: 'column' }} onSubmit={(e) => handleSubmit(e)}>
+            <p style={{ margin: 0, fontSize: '.5em' }}>{this.state.errorText}</p>
+            <form style={{ display: 'flex', flexDirection: 'column' }} onSubmit={(e) => this.handleSubmit(e)}>
 
                 <div style={{ display: 'flex', position: 'relative' }}>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <label htmlFor='email'>Email</label>
-                        <input style={{ position: 'relative' }} required type='email' name='email' id='email' onChange={(e) => { handleEmail(e) }} />
+                        <input style={{ position: 'relative' }} required type='email' name='email' id='email' onChange={(e) => { this.handleEmail(e) }} />
                     </div>
                 </div>
 
                 <div style={{ display: 'flex', position: 'relative' }}>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <label htmlFor='password'>Password</label>
-                        <input required type='password' id='password' onChange={(e) => { handlePassword(e) }} />
+                        <input required type='password' id='password' onChange={(e) => { this.handlePassword(e) }} />
                     </div>
                 </div>
 
-                <button type='button' style={{ margin: '1em' }} onClick={() => setSignup(!signup)}>{signup ? 'Need to Login?' : 'Need to Signup?'}</button>
+                <button type='button' style={{ margin: '1em' }} onClick={() => this.setState({signup: !this.state.signup})}>{this.state.signup ? 'Need to Login?' : 'Need to Signup?'}</button>
 
-                <button type='submit' style={{ margin: '1em' }}>{signup ? 'Signup' : 'Login'} </button>
+                <button type='submit' style={{ margin: '1em' }}>{this.state.signup ? 'Signup' : 'Login'} </button>
 
             </form>
         </>
     )
+}
 }
 
 export default Auth;
