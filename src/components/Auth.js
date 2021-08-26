@@ -9,8 +9,8 @@ const Auth = (props) => {
 
     
     const handleSubmit = async (e) => {
-        const apiURL = `https://useracess.herokuapp.com/user/${signup ? 'create' : 'login'}`;
         e.preventDefault();
+        const apiURL = `https://useracess.herokuapp.com/user/${signup ? 'create' : 'login'}`;
 
         const reqBody = {
             email: email,
@@ -52,7 +52,7 @@ const Auth = (props) => {
 
     useEffect(() => {
         props.setIsClass(Boolean(Auth?.prototype?.render))
-    },[])
+    })
 
 
     return (
